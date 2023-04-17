@@ -1,12 +1,7 @@
 {
-    "link": "https://app.fantasanremo.com/",
+    "link": "https://app.fantaeurovision.com/",
     "league_dict": {
-        "Campionato Mondiale": "637c24339cc0018fbf707872",
-        "TicketOne": "63a32534499b48e04bc958c5",
-        "Pandora": "63a32418499b48e04bc95891",
-        "Crodino": "63a32371499b48e04bc9586b",
-        "Philadelphia": "63a324d0499b48e04bc958aa",
-        "Lavazza": "63a323c9499b48e04bc9587e"
+        "Campionato Mondiale": "637c24339cc0018fbf707872"
     },
     "wait_time": 10,
     "number_element_by_page": 10,
