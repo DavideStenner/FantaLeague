@@ -8,8 +8,8 @@
     "num_baudi": 100, 
     "num_selection": 5,
     "xpath_dict": {
-        "accept_credential": "//button[@title='Accedi']",
-        "next_page": "//button[2][@class='MuiButtonBase-root css-19w4wep']",
+        "accept_credential": "//button[@title='Enter']",
+        "next_page": "//button[2][@class='MuiButtonBase-root css-uyq7mf']",
         "coockie": "//*[@id='CybotCookiebotDialogBodyButtonDecline']",
         "total_team": "//div[@class='MuiBox-root css-dyc9h6']//h6[@class='MuiTypography-root MuiTypography-subtitle2 css-jyrmge']"
     },
@@ -17,6 +17,9 @@
         "box_info": "MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-c_lg-6 css-xrgrr1",
         "team_info": "MuiBox-root css-rddnth",
         "number_total_team": "MuiTypography-root MuiTypography-subtitle2 css-jyrmge"
-    }
-    
+    },
+    "language_config": {
+        "team_box_text": "Squadre"
+    },
+    "personal_team_name": "pybranchia"
 }

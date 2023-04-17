@@ -48,6 +48,8 @@ class ScraperFanta():
         self.class_dict=config["class_dict"]
         self.check_unique_name=check_unique_name
         self.num_selection = config["num_selection"]
+        self.language_config = config['language_config']
+        self.personal_team_name = config['personal_team_name']
         
         self.initialize_driver()
         
@@ -55,7 +57,7 @@ class ScraperFanta():
         self.captain = Counter()
         self.score_selection = Counter()
 
-        self.unique_team_set = set(['pybranchia'])
+        self.unique_team_set = set([self.personal_team_name])
 
         self.number_page_scrape = number_page_scrape
         self.keep_active_pc_iteration = keep_active_pc_iteration
@@ -147,7 +149,7 @@ class ScraperFanta():
                 soup.find(
                     'h6', 
                     {"class": self.class_dict['number_total_team']}
-                ).getText().replace('Squadre', '')
+                ).getText().replace(self.language_config['team_box_text'], '')
             )
             used_number_team = int(total_number_team * self.pct_scrape)
 
