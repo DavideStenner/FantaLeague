@@ -255,12 +255,6 @@ class ScraperFanta():
 
         self.save_results()
         
-# %%
-# scraper = ScraperFanta(number_page_scrape = 5, test=True, backup=1)
-# scraper.activate_bot()
-
-
-#%%
 if __name__=='__main__':
 
     parser = argparse.ArgumentParser()
