@@ -1,5 +1,6 @@
 # %%
 import json
+from scipy.special import softmax
 import pandas as pd
 import numpy as np
 import cvxpy as cp
@@ -40,7 +41,33 @@ def get_artists_composition(
 
     return results, score
 
-def get_best_team(path_save: str, league: str, print_all: bool, use_leaderboard: bool):
+def calculate_score(
+    df: pd.DataFrame, use_spotify: bool
+):
+    df['score_captain'] = (
+        (df['weight']/(df['frequenza'] * 5))
+    )
+
+    #add rank of quotazione
+    df['softmax_quotazione'] = softmax(
+        df['quotazione']
+    )
+    if use_spotify:
+        #rescale
+        df['popularity'] = df['popularity'] / 100 
+
+    df['score'] = (
+        df['score_captain'] * .3 + 
+        df['popularity'] * .6 +
+        df['softmax_quotazione'] * 0.1
+    ) 
+    return df    
+
+def get_best_team(
+    path_save: str, league: str, 
+    print_all: bool, 
+    use_leaderboard: bool, use_spotify: bool
+):
     save_folder = os.path.join(path_save, league)
 
     if not os.path.exists(save_folder):
@@ -69,6 +96,10 @@ def get_best_team(path_save: str, league: str, print_all: bool, use_leaderboard:
     df['artista'] = df['artista'].map(artists_mapping)
     df['quotazione'] = df['artista'].map(quotazioni)
 
+    if use_spotify:
+        spotify_result = pd.read_csv('spotify_result/spotify_results.csv')
+        df = df.merge(spotify_result)
+    
     #rank medio
     if use_leaderboard:
         leaderboard_results = mapping['classifica_artisti']
@@ -78,13 +109,12 @@ def get_best_team(path_save: str, league: str, print_all: bool, use_leaderboard:
         df['score_quotazione'] = df['score']/df['quotazione']
 
     else:
-        df['score'] = (
-            (df['weight']/(df['frequenza'] * 5)) 
-        )
+        df = calculate_score(df, use_spotify=use_spotify)
 
     composition, score = get_artists_composition(df)
     composition = composition.sort_values('score', ascending=False)\
         .reset_index(drop=True)
+    
     if print_all:
         print('\n\n')
         print(df.sort_values('score', ascending=False).to_markdown())
@@ -108,6 +138,7 @@ if __name__=='__main__':
     parser.add_argument('--get_all', action='store_true')
     parser.add_argument('--print_all', action='store_true')
     parser.add_argument('--use_leaderboard', action='store_true')
+    parser.add_argument('--use_spotify', action='store_true')
 
     args = parser.parse_args()
     
@@ -120,6 +151,6 @@ if __name__=='__main__':
         
         for league_name, _ in league_dict.items():
             print(f'\n\nStarting {league_name}')
-            get_best_team(args.path_save, league_name, args.print_all, args.use_leaderboard)
+            get_best_team(args.path_save, league_name, args.print_all, args.use_leaderboard, args.use_spotify)
     else:
-        get_best_team(args.path_save, args.league, args.print_all, args.use_leaderboard)
+        get_best_team(args.path_save, args.league, args.print_all, args.use_leaderboard, args.use_spotify)
