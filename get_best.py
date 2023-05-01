@@ -56,13 +56,16 @@ def calculate_score(
         #rescale
         df['popularity'] = df['popularity'] / 100 
 
-    df['score'] = (
-        df['score_captain'] * .3 + 
-        df['popularity'] * .6 +
+        df['score'] = (
+            df['score_captain'] * .3 + 
+            df['popularity'] * .6 +
+            
+            #collinearity with score_captain
+            df['softmax_quotazione'] * .0
+        ) 
+    else:
+        df['score'] = df['score_captain']
         
-        #collinearity with score_captain
-        df['softmax_quotazione'] * .0
-    ) 
     return df    
 
 def get_best_team(
