@@ -5,6 +5,7 @@ The aim of this project is to create the best possible team with the available i
 This was done in two steps:
 
 - Scrape all teams from https://app.fantaeurovision.com/
+- (Optional) get spotify popularity for the selected song.
 - Optimal choice of the team by solving the knapsack problem, using the average order of artist choice within the team as the value and the popularity on the official spotify playlist.
 
 # How it works
