@@ -26,8 +26,8 @@ def get_spotify_popularity(
         },
         data={
             "grant_type": "client_credentials",
-            "client_id": credential['spotify_client_id'],#"cefc62abff554ec8a708ab48043c1962",
-            "client_secret": credential['spotify_client_secret']#"cd48edde2c2140a38cbf46a0735e08fc"
+            "client_id": credential['spotify_client_id'],
+            "client_secret": credential['spotify_client_secret']
         }
         
     )
