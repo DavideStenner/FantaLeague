@@ -59,14 +59,17 @@ def calculate_score(
     df['score'] = (
         df['score_captain'] * .3 + 
         df['popularity'] * .6 +
-        df['softmax_quotazione'] * 0.1
+        
+        #collinearity with score_captain
+        df['softmax_quotazione'] * .0
     ) 
     return df    
 
 def get_best_team(
     path_save: str, league: str, 
     print_all: bool, 
-    use_leaderboard: bool, use_spotify: bool
+    use_leaderboard: bool, 
+    use_spotify: bool, save_df: bool
 ):
     save_folder = os.path.join(path_save, league)
 
@@ -110,7 +113,10 @@ def get_best_team(
 
     else:
         df = calculate_score(df, use_spotify=use_spotify)
-
+    
+    if save_df:
+        df.to_csv('data_feature/results.csv', index=False)
+    
     composition, score = get_artists_composition(df)
     composition = composition.sort_values('score', ascending=False)\
         .reset_index(drop=True)
@@ -139,6 +145,7 @@ if __name__=='__main__':
     parser.add_argument('--print_all', action='store_true')
     parser.add_argument('--use_leaderboard', action='store_true')
     parser.add_argument('--use_spotify', action='store_true')
+    parser.add_argument('--save_df', action='store_true')
 
     args = parser.parse_args()
     
@@ -151,6 +158,6 @@ if __name__=='__main__':
         
         for league_name, _ in league_dict.items():
             print(f'\n\nStarting {league_name}')
-            get_best_team(args.path_save, league_name, args.print_all, args.use_leaderboard, args.use_spotify)
+            get_best_team(args.path_save, league_name, args.print_all, args.use_leaderboard, args.use_spotify, args.save_df)
     else:
-        get_best_team(args.path_save, args.league, args.print_all, args.use_leaderboard, args.use_spotify)
+        get_best_team(args.path_save, args.league, args.print_all, args.use_leaderboard, args.use_spotify, args.save_df)
