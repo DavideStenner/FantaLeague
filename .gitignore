@@ -5,3 +5,5 @@ data/*
 results/*
 leaderboard_result/*
 test_*.py
+.venv/
+test/
