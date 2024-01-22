@@ -1,0 +1,10 @@
+scipy
+pandas
+numpy
+cvxpy
+requests
+selenium
+webdriver_manager
+beautifulsoup4
+pyautogui
+tqdm
