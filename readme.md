@@ -8,6 +8,12 @@ This was done in two steps:
 - (Optional) get spotify popularity for the selected song.
 - Optimal choice of the team by solving the knapsack problem, using the average order of artist choice within the team as the value and the popularity on the official spotify playlist.
 
+# Installation
+
+```
+python -m pip install -e .
+python setup.py clean
+```
 # How it works
 
 ### Scrape Main league
