@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 from glob import glob
 from time import sleep
+from math import floor
 from typing import Dict, Any, Type
 from collections import Counter
 
@@ -151,17 +152,21 @@ class ScraperFanta():
             
     def calculate_total_page(self) -> None:
         #calculate number of page to scraper
-
+        print('Calculating total number of page')
         #wait element
         self.wait_(By.XPATH, self.config['xpath_dict']['total_team'], EC.presence_of_element_located)
         soup = self.get_html_source()
 
-        total_number_team = int(
-            soup.find(
+        total_team_label: str = soup.find(
                 'h6', 
                 {"class": self.config["class_dict"]['number_total_team']}
             ).getText().replace(self.config['language_config']['team_box_text'], '')
-        )
+        
+        if 'k' in total_team_label.lower():
+            total_team_label = total_team_label.lower().replace('k', '00').replace('.', '')
+            
+        total_number_team = floor(int(total_team_label)/1000) * 1000
+                                
         used_number_team = int(total_number_team * self.pct_scrape)
 
         self.number_page_scrape = int(used_number_team//self.config["number_element_by_page"])
