@@ -17,12 +17,13 @@
     },
     "class_dict": {
         "box_info": "MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-c_lg-6 css-xrgrr1",
-        "team_info": "MuiBox-root css-rddnth",
-        "number_total_team": "MuiTypography-root MuiTypography-subtitle2 css-jyrmge"
+        "team_info": "MuiBox-root css-1fayhdk",
+        "number_total_team": "MuiTypography-root MuiTypography-subtitle2 css-jyrmge",
+        "team_pic": "MuiAvatar-root MuiAvatar-circular css-164p7eg"
     },
     "language_config": {
         "team_box_text": "Teams"
     },
     "personal_team_name": "proer",
-    "spotify_playlist_id": "37i9dQZF1DWVCKO3xAlT1Q"
+    "no_pic_url": "https://ui-avatars.com/api/?name="
 }

@@ -29,7 +29,7 @@ class ScraperFanta():
         selected_league: str,
         number_page_scrape: int=None, pct_scrape: float =.6, 
         backup: int = 500, keep_active_pc_iteration: int = 25,
-        check_unique_name: bool=False, 
+        check_unique_name: bool=False, keep_no_pic:bool=False,
         test: bool =False, overwrite: bool = True
 
     ):
@@ -41,7 +41,8 @@ class ScraperFanta():
         self.backup: int = backup
         self.test: bool = test
         self.check_unique_name: bool = check_unique_name        
-
+        self.keep_no_pic: bool = keep_no_pic
+        
         self.number_page_scrape: int = number_page_scrape
         self.keep_active_pc_iteration: Optional[int] = keep_active_pc_iteration
         self.pct_scrape: float =pct_scrape
@@ -180,12 +181,30 @@ class ScraperFanta():
         soup = BeautifulSoup(html_current_page, features="html.parser")
         return soup
 
+    def keep_team(self, team_box: BeautifulSoup) -> bool:
+        box_pic = team_box.find(
+            'div', {'class': self.config['class_dict']['team_pic']}
+        )
+        if box_pic is None:
+            return False
+        
+        image_url = box_pic.find('img')['src']
+        keep_it = self.config['no_pic_url'] not in image_url
+        return keep_it
+                    
     def get_statistics(self) -> None:
         sleep(.5)
         soup = self.get_html_source()
 
         team_box_list = soup.find_all('div', {"class": self.config["class_dict"]['box_info']})
 
+        if not self.keep_no_pic:
+
+            team_box_list = [
+                team_box for team_box in team_box_list
+                if self.keep_team(team_box=team_box)
+            ]
+            
         for team_box in team_box_list:
             team_name = team_box.find('div', {'class': self.config["class_dict"]['team_info']}).getText().strip()
             
