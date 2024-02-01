@@ -8,3 +8,5 @@ webdriver_manager
 beautifulsoup4
 pyautogui
 tqdm
+Pyarrow
+tabulate
