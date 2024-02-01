@@ -8,7 +8,7 @@ from tqdm import tqdm
 from glob import glob
 from time import sleep
 from math import floor
-from typing import Dict, Any, Type
+from typing import Dict, Any, Type, Optional
 from collections import Counter
 
 from selenium import webdriver
@@ -43,7 +43,7 @@ class ScraperFanta():
         self.check_unique_name: bool = check_unique_name        
 
         self.number_page_scrape: int = number_page_scrape
-        self.keep_active_pc_iteration: int = keep_active_pc_iteration
+        self.keep_active_pc_iteration: Optional[int] = keep_active_pc_iteration
         self.pct_scrape: float =pct_scrape
         self.overwrite: bool = overwrite
         
@@ -263,8 +263,9 @@ class ScraperFanta():
             if (iteration % self.backup == 0) & (iteration > 0):
                 self.save_results(iteration)
             
-            if (iteration % self.keep_active_pc_iteration == 0) & (iteration > 0):
-                self.keep_pc_active()
+            if self.keep_active_pc_iteration is not None:
+                if (iteration % self.keep_active_pc_iteration == 0) & (iteration > 0):
+                    self.keep_pc_active()
 
             self.get_next_page()
             self.get_statistics()
