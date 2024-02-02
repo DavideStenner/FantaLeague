@@ -21,6 +21,12 @@ def import_mapping_artists(mapping_path: str='mapping/mapping_artists.json') -> 
 
     return mapping
 
+def import_results(league: str, results_path: str='data/{league}/results.json') -> Dict[str, Any]:
+    with open(results_path.format(league=league)) as result_file:
+        results = json.load(result_file)
+
+    return results
+
 def set_key_env() -> None:
     """
     Set credential as os environ
