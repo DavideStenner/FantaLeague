@@ -15,6 +15,12 @@ def import_credential(config_path: str='config/credential.json') -> Dict[str, An
 
     return config
 
+def import_mapping_artists(mapping_path: str='mapping/mapping_artists.json') -> Dict[str, Any]:
+    with open(mapping_path) as file:
+        mapping = json.load(file)
+
+    return mapping
+
 def set_key_env() -> None:
     """
     Set credential as os environ
