@@ -25,5 +25,8 @@
         "team_box_text": "Teams"
     },
     "personal_team_name": "proer",
-    "no_pic_url": "https://ui-avatars.com/api/?name="
+    "spotify_playlist_id": "37i9dQZF1DWVCKO3xAlT1Q",
+    "no_pic_url": "https://ui-avatars.com/api/?name=",
+    "path_save_optimization": "results",
+    "path_leaderboard_result": "leaderboard_result"
 }
