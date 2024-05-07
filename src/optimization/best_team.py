@@ -146,3 +146,41 @@ def get_best_team(
         os.path.join(save_folder, league+'.csv'), 
         index=False
     )
+
+def get_best_spotify_team(
+    config: Dict[str, Any],
+    print_all: bool, 
+):
+
+    save_folder = os.path.join(
+        config['path_save_optimization'], 
+        'spotify'
+    )
+
+    if not os.path.exists(save_folder):
+        os.makedirs(save_folder)
+
+    mapping = import_mapping_artists()
+    df = pd.read_csv('spotify_result/spotify_results.csv')
+
+    df['quotazione'] = df['artista'].map(mapping['quotazioni'])
+    df['score'] = df['popularity']
+    
+    composition, score = get_artists_composition(df, config=config)
+    composition = (
+        composition
+        .sort_values('score', ascending=False)
+        .reset_index(drop=True)
+    )
+    if print_all:
+        print('\n\n')
+        print(df.sort_values('score', ascending=False).to_markdown())
+        print('\n\n')
+
+    print(f'\n\nScore of after optimization: {score}\n\n')
+    print(composition.to_markdown())
+    
+    composition.to_csv(
+        os.path.join(save_folder + 'spotify.csv'), 
+        index=False
+    )

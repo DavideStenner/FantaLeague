@@ -4,9 +4,9 @@ import pandas as pd
 
 def get_spotify_popularity(
     query_spotify: str = "items(track(name, popularity, href,album(name), artists(name)))",
-    path_config: str="config.json",
-    path_mapping: str='mapping_artists.json',
-    path_credential: str ='credential.json'
+    path_config: str="config/config.json",
+    path_mapping: str='mapping/mapping_artists.json',
+    path_credential: str ='config/credential.json'
 ):
     #get config dictionary
     with open(path_mapping) as mapping_file:
