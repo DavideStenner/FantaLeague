@@ -1,7 +1,7 @@
 {
     "link": "https://fantasanremo.com/login",
     "league_dict": {
-        "TicketOne": "63a32534499b48e04bc958c5"
+        "Motorola": "676201f91298a4662b11e329"
     },
     "wait_time": 10,
     "number_element_by_page": 10,
@@ -9,7 +9,8 @@
     "num_selection": 5,
     "xpath_dict": {
         "accept_credential": "//button[@title='Enter']",
-        "next_page": "//button[2][@class='MuiButtonBase-root css-19w4wep']",
+        "next_page": "//button[2][@class='MuiButtonBase-root css-erttnv']",
+        "skip_tutotial": "//button[@data-test-id='button-skip']",
         "coockie": "//*[@id='CybotCookiebotDialogBodyButtonDecline']",
         "total_team": "//div[@class='MuiBox-root css-dyc9h6']//h6[@class='MuiTypography-root MuiTypography-subtitle2 css-jyrmge']",
         "login_email": "//*[@type='email']",
