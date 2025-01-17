@@ -38,6 +38,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=_read_install_requires(),
-    python_requires="==3.11.*",
+    python_requires="==3.13.*",
     cmdclass={'clean': CleanEggInfo}
 )
