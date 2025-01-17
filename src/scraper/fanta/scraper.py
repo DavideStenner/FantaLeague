@@ -275,7 +275,7 @@ class ScraperFanta():
         self.wait_and_click_by(By.XPATH, self.config["xpath_dict"]['next_page'])
 
     def random_sleep(self) -> None:
-        sleep_time = np.random.uniform(.35, .5, 1)[0]
+        sleep_time = np.random.uniform(.1, .25, 1)[0]
         sleep(sleep_time)
 
     def save_results(self, iteration=None) -> None:
