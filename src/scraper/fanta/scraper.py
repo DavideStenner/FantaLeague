@@ -167,7 +167,14 @@ class ScraperFanta():
         input_password.send_keys(self.password)
 
         self.wait_and_click_by(By.XPATH, self.config['xpath_dict']['accept_credential'])
-        self.wait_and_click_by(By.ID, self.league_id)
+        
+        #skip tutorial
+        self.wait_and_click_by(
+            By.XPATH, self.config['xpath_dict']['skip_tutotial']
+        )
+        
+        #go to league page
+        self.driver.get(f"{self.config['base_link']}/league?{self.config['league_dict'][self.selected_league]}")
         
         if self.number_page_scrape is None:
             
