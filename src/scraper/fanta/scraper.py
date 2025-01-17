@@ -26,7 +26,7 @@ from src.utils.import_utils import set_key_env, import_config
 class ScraperFanta():
     def __init__(
         self,
-        selected_league: str,
+        league: str,
         number_page_scrape: int=None, pct_scrape: float =.6, 
         backup: int = 500, keep_active_pc_iteration: int = 25,
         check_unique_name: bool=False, keep_no_pic:bool=False,
@@ -35,12 +35,13 @@ class ScraperFanta():
     ):
         pyautogui.FAILSAFE = False
         
-        self.selected_league: str = selected_league
+        self.league: str = league
         self.config: Dict[str, Any] = import_config()
 
         self.backup: int = backup
         self.test: bool = test
-        self.check_unique_name: bool = check_unique_name        
+        self.check_unique_name: bool = check_unique_name 
+
         self.keep_no_pic: bool = keep_no_pic
         
         self.number_page_scrape: int = number_page_scrape
@@ -49,7 +50,7 @@ class ScraperFanta():
         self.overwrite: bool = overwrite
         
         self.driver: Type[webdriver.Chrome] = None
-        self.path_save: str = f"data/{selected_league}/"
+        self.path_save: str = f"data/{league}/"
 
         self.create_folder_structure()
         self.initialize_config()
@@ -76,7 +77,7 @@ class ScraperFanta():
         self.email = os.getenv('email')
         self.password = os.getenv('password')
 
-        assert self.selected_league in self.config["league_dict"].keys()
+        assert self.league in self.config["league_dict"].keys()
         
         self.results: Type[Counter] = Counter()
         self.captain: Type[Counter] = Counter()
@@ -84,7 +85,7 @@ class ScraperFanta():
 
         self.unique_team_set: set = set([self.config['personal_team_name']])
 
-        self.league_id: str  = self.config["league_dict"][self.selected_league]
+        self.league_id: str  = self.config["league_dict"][self.league]
         
     def initialize_driver(self) -> None:
         chrome_options = Options()
@@ -174,7 +175,7 @@ class ScraperFanta():
         )
         
         #go to league page
-        self.driver.get(f"{self.config['base_link']}/league?{self.config['league_dict'][self.selected_league]}")
+        self.driver.get(f"{self.config['base_link']}/league?id={self.config['league_dict'][self.league]}")
         
         if self.number_page_scrape is None:
             
@@ -244,7 +245,7 @@ class ScraperFanta():
                     artists_list = [
                         x.get('src')
                         for x in team_box.find_all('img')
-                        if 'artists/' in x.get('src')
+                        if ('artists/' in x.get('src')) or ('assets/' in x.get('src'))
                     ]
 
                     artists_counter = Counter(artists_list)
@@ -258,7 +259,7 @@ class ScraperFanta():
                 artists_list = [
                     x.get('src')
                     for x in team_box.find_all('img')
-                    if 'artists/' in x.get('src')
+                    if ('artists/' in x.get('src')) or ('assets/' in x.get('src'))
                 ]
 
                 artists_counter = Counter(artists_list)

@@ -2,7 +2,8 @@
     "base_link": "https://fantasanremo.com",
     "link": "https://fantasanremo.com/login",
     "league_dict": {
-        "Motorola": "676201f91298a4662b11e329"
+        "Motorola": "676201f91298a4662b11e329",
+        "TicketOne": "676200e21298a4662b11e2c8"
     },
     "wait_time": 10,
     "number_element_by_page": 10,
@@ -13,22 +14,22 @@
         "next_page": "//button[2][@class='MuiButtonBase-root css-erttnv']",
         "skip_tutotial": "//button[@data-test-id='button-skip']",
         "coockie": "//*[@id='CybotCookiebotDialogBodyButtonDecline']",
-        "total_team": "//div[@class='MuiBox-root css-dyc9h6']//h6[@class='MuiTypography-root MuiTypography-subtitle2 css-jyrmge']",
+        "total_team": "//div[@class='MuiBox-root css-dyc9h6']//h6[@class='MuiTypography-root MuiTypography-subtitle2 css-1uwv6h5']",
         "login_email": "//*[@type='email']",
         "login_password": "//*[@type='password']"
     },
     "class_dict": {
         "box_info": "MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-c_lg-6 css-xrgrr1",
-        "team_info": "MuiBox-root css-1fayhdk",
-        "number_total_team": "MuiTypography-root MuiTypography-subtitle2 css-jyrmge",
-        "team_pic": "MuiAvatar-root MuiAvatar-circular css-164p7eg"
+        "team_info": "MuiStack-root css-1vcvbu6",
+        "number_total_team": "MuiTypography-root MuiTypography-subtitle2 css-1uwv6h5",
+        "team_pic": "MuiAvatar-root MuiAvatar-circular css-brgu44"
     },
     "language_config": {
         "team_box_text": "Teams"
     },
     "personal_team_name": "proer",
     "spotify_playlist_id": "37i9dQZF1DWVCKO3xAlT1Q",
-    "no_pic_url": "https://ui-avatars.com/api/?name=",
+    "no_pic_url": "https://ui-avatars.com/api",
     "path_save_optimization": "results",
     "path_leaderboard_result": "leaderboard_result"
 }
