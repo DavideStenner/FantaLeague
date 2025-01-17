@@ -101,28 +101,27 @@ class ScraperFanta():
     def wait_and_click_by(
         self, by_: str, pattern: str, 
     ) -> None:
-        element_ = self.wait_(by_, pattern, EC.element_to_be_clickable, return_element=True)
+        element_ = self.wait_and_get(by_, pattern, EC.element_to_be_clickable, return_element=True)
 
         actions = webdriver.ActionChains(self.driver)
         actions.move_to_element(element_)
         actions.click(element_)
         actions.perform()
 
-    def wait_(self, by_: str, pattern: str, conditions: callable, return_element: bool =False)-> WebElement:
-        element_ = WebDriverWait(self.driver, self.config['wait_time']).until(
-            conditions(
-                (by_, pattern)
+    def wait_and_get(self, by_: str, pattern: str, conditions: callable, return_element: bool =False)-> WebElement:
+        element_ = (
+            WebDriverWait(
+                self.driver, 
+                self.config['wait_time']
+            )
+            .until(
+                conditions(
+                    (by_, pattern)
+                )
             )
         )
         if return_element:
             return element_
-
-    def wait_and_find(
-        self, by_: str, pattern: str
-    ) -> WebElement:    
-        self.wait_(by_, pattern, EC.presence_of_element_located)
-        
-        return self.driver.find_element(by_, pattern)
     
     def quit(self) -> None:
         self.driver.quit()
@@ -133,12 +132,22 @@ class ScraperFanta():
         self.wait_and_click_by(By.XPATH, self.config['xpath_dict']['coockie'])
         actions = webdriver.ActionChains(self.driver)
 
-        input_email = self.wait_and_find(By.XPATH, self.config['xpath_dict']['login_email'])
+        input_email = self.wait_and_get(
+            By.XPATH, 
+            self.config['xpath_dict']['login_email'], 
+            EC.presence_of_element_located,
+            return_element=True
+        )
         actions.move_to_element(input_email)
         actions.perform()
         input_email.send_keys(self.email)
 
-        input_password = self.wait_and_find(By.XPATH, self.config['xpath_dict']['login_password'])
+        input_password = self.wait_and_get(
+            By.XPATH, self.config['xpath_dict']['login_password'],
+            EC.presence_of_element_located,
+            return_element=True
+        )
+        
         actions.move_to_element(input_password)
         actions.perform()
         input_password.send_keys(self.password)
@@ -154,7 +163,7 @@ class ScraperFanta():
         #calculate number of page to scraper
         print('Calculating total number of page')
         #wait element
-        self.wait_(By.XPATH, self.config['xpath_dict']['total_team'], EC.presence_of_element_located)
+        self.wait_and_get(By.XPATH, self.config['xpath_dict']['total_team'], EC.presence_of_element_located)
         soup = self.get_html_source()
 
         total_team_label: str = soup.find(
