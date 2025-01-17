@@ -126,10 +126,24 @@ class ScraperFanta():
     def quit(self) -> None:
         self.driver.quit()
 
-    
+    def handle_cookie(self) -> None:
+        #find cookie
+        refusal_cookie = self.wait_and_get(
+            By.XPATH, 
+            self.config['xpath_dict']['coockie'], 
+            EC.presence_of_element_located, 
+            return_element=True
+        )
+        if refusal_cookie.is_displayed():
+            self.wait_and_click_by(
+                By.XPATH, 
+                self.config['xpath_dict']['coockie']
+            )
+
     def login(self) -> None:
         print('Login')
-        self.wait_and_click_by(By.XPATH, self.config['xpath_dict']['coockie'])
+        self.handle_cookie()
+        
         actions = webdriver.ActionChains(self.driver)
 
         input_email = self.wait_and_get(
