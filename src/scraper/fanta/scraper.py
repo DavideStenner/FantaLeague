@@ -53,7 +53,6 @@ class ScraperFanta():
 
         self.create_folder_structure()
         self.initialize_config()
-        self.initialize_driver()
         
 
     def create_folder_structure(self) -> None:
@@ -291,3 +290,13 @@ class ScraperFanta():
             self.random_sleep()
 
         self.save_results()
+
+    def __call__(self):
+        self.initialize_driver()
+        try:
+            self.activate_bot()
+            self.quit()
+            
+        except Exception as e:
+            self.quit()
+            raise e
