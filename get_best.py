@@ -20,6 +20,7 @@ if __name__=='__main__':
             config=config, print_all=args.print_all
         )
     else:
+        del args.use_only_spotify
         get_best_team(
             config=config, **vars(args)
         )
