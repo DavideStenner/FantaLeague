@@ -9,12 +9,9 @@ from src.utils.import_utils import import_mapping_artists, import_results
 def rescale_series(df: pd.Series) -> pd.Series:
     return (df - df.min())/(df.max()-df.min())
 
-def get_artists_composition(
-        df: pd.DataFrame, config: Dict[str, Any],
-    ) -> Tuple[pd.DataFrame, float]:
-    
-    number_suggestion = df.shape[0]
-
+def fantasenrmo_composition_v1(df: pd.DataFrame, number_suggestion: int, config: dict[str, Any]) -> Tuple[
+        cp.Problem, cp.Variable
+    ]:
     #dummy variable for selection
     selection = cp.Variable(number_suggestion, boolean=True)
 
@@ -33,11 +30,71 @@ def get_artists_composition(
     fanta_problem = cp.Problem(
         cp.Maximize(problem_knapsack), constraint_list
     )
+    return fanta_problem, selection
 
-    score = fanta_problem.solve(solver=cp.SCIPY, scipy_options={'maxiter': 10000})
+def fantasenrmo_composition_v2(df: pd.DataFrame, number_suggestion: int, config: dict[str, Any]) -> Tuple[
+        cp.Problem, cp.Variable, cp.Variable
+    ]:
+    #dummy variable for selection
+    selection = cp.Variable(number_suggestion, boolean=True)
+    reserve = cp.Variable(number_suggestion, boolean=True)
+
+    #score reserve
+    weight_reserve: float = config['weight_reserve']
+    
+    score_reserve = cp.Constant(
+        (df['score'] * weight_reserve).values.tolist()
+    )
+    #score
+    score = cp.Constant(df['score'].values.tolist())
+    
+    #weight for constraint
+    quotazione = cp.Constant(df['quotazione'].values.tolist())
+
+    artist_score =(
+        cp.multiply(
+            score, 
+            selection
+        ) +
+        #if reserve -> score reserve
+        cp.multiply(
+            reserve,
+            score_reserve
+        )
+    )
+    problem_knapsack = sum(artist_score)
+
+    constraint_list = [
+        sum(cp.multiply(selection, quotazione)) + sum(cp.multiply(reserve, quotazione))<= config['num_baudi'],
+        sum(selection) == config['num_selection'],
+        sum(reserve) == config['num_reserve'],
+        selection + reserve <= 1
+    ]
+    fanta_problem = cp.Problem(
+        cp.Maximize(problem_knapsack), constraint_list
+    )
+    return fanta_problem, selection, reserve
+
+def get_artists_composition(
+        df: pd.DataFrame, config: Dict[str, Any],
+    ) -> Tuple[pd.DataFrame, float]:
+    
+    number_suggestion = df.shape[0]
+
+    fanta_problem, selection, reserve = fantasenrmo_composition_v2(
+        df=df, number_suggestion=number_suggestion, config=config
+    )
+    score = fanta_problem.solve(solver=cp.SCIPY)
     selection_results = np.round(selection.value).astype(int)
+    reserve_results = np.round(reserve.value).astype(int)
+
+    #assign reserve
+    df['reserve'] = False
+    df.loc[reserve_results==1, 'reserve'] = True
+    
     results = df.loc[
-        selection_results==1
+        (selection_results==1) |
+        (reserve_results==1)
     ]
     assert results['quotazione'].sum() <= config['num_baudi']
 
@@ -97,14 +154,19 @@ def get_best_team(
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
 
-    mapping = import_mapping_artists()
+    mapping_artits = import_mapping_artists()
 
     results = import_results(league=league)
 
     df = pd.DataFrame(results).reset_index().rename(columns={'index': 'artist_scrape_id'})
 
-    df['artist'] = df['artist_scrape_id'].map(mapping['artists_mapping'])
-    df['quotazione'] = df['artist'].map(mapping['quotazioni'])
+    df['artist'] = df['artist_scrape_id'].map(mapping_artits['artists_mapping'])
+    df = df.loc[
+        (~df['artist'].isin(mapping_artits['banned_artists'])) &
+        (~df['artist'].isnull())
+    ].reset_index(drop=True)
+
+    df['quotazione'] = df['artist'].map(mapping_artits['quotazioni'])
     df['rank'] = df['quotazione'].rank(method='average')
     df = df[
         ['artist'] + [col for col in df if col!='artist']
@@ -116,7 +178,7 @@ def get_best_team(
     
     #rank medio
     if use_leaderboard:
-        leaderboard_results = mapping['classifica_artisti']
+        leaderboard_results = mapping_artits['classifica_artisti']
         df['score'] = df['artista'].map(leaderboard_results)
 
         #inspect
