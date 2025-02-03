@@ -2,13 +2,15 @@
     "base_link": "https://fantasanremo.com",
     "link": "https://fantasanremo.com/login",
     "league_dict": {
-        "Motorola": "676201f91298a4662b11e329",
-        "TicketOne": "676200e21298a4662b11e2c8"
+        "TicketOne": "676200e21298a4662b11e2c8",
+        "SiVola": "6769f5214b4a3c4a6e45284b"
     },
     "wait_time": 10,
     "number_element_by_page": 10,
     "num_baudi": 100, 
     "num_selection": 5,
+    "num_reserve": 2,
+    "weight_reserve": 0.10909090909,
     "xpath_dict": {
         "accept_credential": "//button[@title='Enter']",
         "next_page": "//button[2][@class='MuiButtonBase-root css-erttnv']",
