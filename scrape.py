@@ -7,7 +7,7 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--league', type=str, default="TicketOne")
     parser.add_argument('--number_page_scrape', type=int, default=None)
-    parser.add_argument('--pct_scrape', type=float, default=0.3)
+    parser.add_argument('--pct_scrape', type=float, default=0.7)
     parser.add_argument('--backup', type=int, default=1000)
     parser.add_argument('--keep_active_pc_iteration', type=int, default=None)
     parser.add_argument('--check_unique_name', action='store_true')
@@ -18,6 +18,7 @@ if __name__=='__main__':
 
     if args.scrape_all_league:
         del args.league
+        del args.scrape_all_league
         league_dict = import_config()['league_dict']
             
         
@@ -25,7 +26,7 @@ if __name__=='__main__':
             print(f'\n\nStarting {league_name}')
             
             scraper = ScraperFanta(
-                selected_league=league_name,
+                league=league_name,
                 **vars(args)
             )
             scraper()
