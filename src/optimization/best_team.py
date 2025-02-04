@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from typing import Dict, Any, Tuple
-from src.utils.import_utils import import_mapping_artists, import_results
+from src.utils.import_utils import import_mapping_artists, import_results, import_results_api
 
 def rescale_series(df: pd.Series) -> pd.Series:
     return (df - df.min())/(df.max()-df.min())
@@ -156,11 +156,16 @@ def get_best_team(
 
     mapping_artits = import_mapping_artists()
 
-    results = import_results(league=league)
+    results = import_results_api(league=league)
 
     df = pd.DataFrame(results).reset_index().rename(columns={'index': 'artist_scrape_id'})
 
-    df['artist'] = df['artist_scrape_id'].map(mapping_artits['artists_mapping'])
+    df['artist'] = df['artist_scrape_id'].map(
+        {
+            artist_url.split('/')[-1].split('-')[0]: artist_name
+            for artist_url, artist_name in mapping_artits['artists_mapping'].items()
+        }
+    )
     df = df.loc[
         (~df['artist'].isin(mapping_artits['banned_artists'])) &
         (~df['artist'].isnull())

@@ -27,6 +27,12 @@ def import_results(league: str, results_path: str='data/{league}/results.json') 
 
     return results
 
+def import_results_api(league: str, results_path: str='data/{league}/result_api.json') -> Dict[str, Any]:
+    with open(results_path.format(league=league)) as result_file:
+        results = json.load(result_file)
+
+    return results
+
 def set_key_env() -> None:
     """
     Set credential as os environ

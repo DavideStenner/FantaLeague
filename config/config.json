@@ -3,7 +3,8 @@
     "link": "https://fantasanremo.com/login",
     "league_dict": {
         "TicketOne": "676200e21298a4662b11e2c8",
-        "SiVola": "6769f5214b4a3c4a6e45284b"
+        "SiVola": "6769f5214b4a3c4a6e45284b",
+        "CampionatoMondiale": "637c24339cc0018fbf707872"
     },
     "wait_time": 10,
     "number_element_by_page": 10,
@@ -33,5 +34,6 @@
     "spotify_playlist_id": "37i9dQZF1DWVCKO3xAlT1Q",
     "no_pic_url": "https://ui-avatars.com/api",
     "path_save_optimization": "results",
-    "path_leaderboard_result": "leaderboard_result"
+    "path_leaderboard_result": "leaderboard_result",
+    "endpoing_url": "https://api-v2.fantasanremo.com/leagues/{league_id}/users?skip={skip}&status=ACCEPTED&limit={limit}&withTeam=1&path=team.name"
 }
